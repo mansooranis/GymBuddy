@@ -24,7 +24,8 @@
     "twrnc": "^3.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "dotenv": "^16.0.1"
   },
   "private": true
 }

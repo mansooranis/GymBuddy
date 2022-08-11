@@ -1,9 +1,11 @@
-import { ScrollView, Text } from "react-native";
+import { SafeAreaView, ScrollView, Text } from "react-native";
 
 export default function HomePage(){
     return (
-        <ScrollView>
-            <Text>Hello</Text>
-        </ScrollView>
+        <SafeAreaView>
+            <ScrollView>
+                <Text>Hello</Text>
+            </ScrollView>
+        </SafeAreaView>
     )
 }

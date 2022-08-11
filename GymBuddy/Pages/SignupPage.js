@@ -1,6 +1,11 @@
-import { useState } from "react";
-import {View, ScrollView, StyleSheet, Text, TextInput, Button, Pressable, SafeAreaView } from "react-native";
+import { useContext, useState } from "react";
+import {View, ScrollView, StyleSheet, Text, TextInput, Button, Pressable, SafeAreaView, Modal } from "react-native";
 import tw from 'twrnc';
+import { UserContext } from "../UserContext";
+import BannerAlert from "./Components/BannerAlert";
+const axios = require('axios').default;
+
+const URL = require("../url").API_URL
 
 export default function SignUp({navigation}){
     const [email, setEmail] = useState(null);
@@ -8,10 +13,42 @@ export default function SignUp({navigation}){
     const [password, setPassword] = useState(null);
     const [repassword, setrePassword] = useState(null);
     const [name, setName] = useState(null);
+    const {user, setUser} = useContext(UserContext);
+    const [banner, setBanner] = useState(false)
+    const [bannermsg, setBannermsg] = useState("")
 
+    const submitUser = async () => {
+        setBanner(false)
+        if (password !== repassword){
+            setBannermsg("Password does not match!")
+            setBanner(true)
+            setTimeout(() => {
+                setBanner(false)
+            }, 4000);
+            return
+        }
+        await axios.post(URL+"/api/user/register",{
+            name: name.toLowerCase(),
+            email: email.toLowerCase(),
+            password: password.toLowerCase(),
+            username: username.toLowerCase(),
+        }).then((res) => {
+            console.log(res, res.data["authToken"], res.data["_id"])
+            setUser(res.data["_id"])
+        }).catch((err)=>{
+            //console.log(err.response["request"]["_response"])
+            setBannermsg(err.response["request"]["_response"])
+            setBanner(true)
+            setTimeout(() => {
+                setBanner(false)
+            }, 4000);
+        })
+        
+    }
     return (
         <SafeAreaView>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                {banner?<BannerAlert message={bannermsg} />:<></>}
                 <View style={styles.container}>
                     <Text style={{fontSize:38}}>Sign Up</Text>
                     <View style = {{flexDirection:"column"}}>
@@ -22,11 +59,11 @@ export default function SignUp({navigation}){
                         <TextInput secureTextEntry={true} style={styles.inputbox} value={repassword} onChangeText={setrePassword} placeholder={"retype password"} />
                         <Pressable 
                             style={styles.buttonstyle}
-                            onPress={() => console.log("I was pressed") }
+                            onPress={() => submitUser() }
                                 >
                                 <Text style={{textAlign:"center", padding:3}}>Submit</Text>
                         </Pressable>
-                        <Pressable style={{marginTop:15}} onPress = {() => {navigation.push("Login")}}>
+                        <Pressable style={{marginTop:15}} onPress = {() => {navigation.navigate("Login")}}>
                             <Text style={tw`text-[#0096FF]`}>Already have an account? Sign in here</Text>
                         </Pressable>
                     </View>

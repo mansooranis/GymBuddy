@@ -5,8 +5,10 @@ const AuthRouter = require("./routes/AuthRoutes")
 const MessageRouter = require("./routes/messages")
 const ConvoRouter = require("./routes/conversations")
 const Server = require("socket.io")
+const cors = require('cors');
 
 app.use(express.json());
+app.use(cors())
 
 app.use("/api/user", AuthRouter)
 app.use("/api/conversation", ConvoRouter)

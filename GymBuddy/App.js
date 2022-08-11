@@ -5,27 +5,37 @@ import LogIn from './Pages/LoginPage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignUp from './Pages/SignupPage';
+import { useState } from 'react';
+import { UserContext } from './UserContext';
+
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [user, setUser] = useState(null);
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen 
-          name="Signup"
-          component={SignUp}
+    <UserContext.Provider value = {{user, setUser}}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen 
+            name="Signup"
+            component={SignUp}
+            options = {{headerShown:false}}
+            />
+          <Stack.Screen 
+            name="Login"
+            component={LogIn}
+            
+            options = {{headerShown:false}}
+          />
+          <Stack.Screen
+          name = "Home"
+          component={HomePage}
           options = {{headerShown:false}}
           />
-        <Stack.Screen 
-          name="Login"
-          component={LogIn}
-          
-          options = {{headerShown:false}}
-        />
-      </Stack.Navigator>
-      
-    </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserContext.Provider>
   );
 }
 
