@@ -23,6 +23,7 @@ An app that connects gym members to one other in an effort to promote personal h
 Open for contibutions! Create a pull request to contribute, make sure your code is well documented
 
 ## License
+GNU Affero General Public License v3.0
 
 ## Visuals (Progress till now)
 <img src="https://github.com/mansooranis/GymBuddy/blob/main/assets/authss.png">
