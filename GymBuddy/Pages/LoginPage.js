@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import {View, ScrollView, StyleSheet, Text, TextInput, Button, Pressable, SafeAreaView } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import tw from 'twrnc';
 import { API_URL } from "../url";
 import { UserContext } from "../UserContext";
@@ -8,22 +9,31 @@ import BannerAlert from "./Components/BannerAlert";
 export default function LogIn({navigation}){
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
-    const {user, setUser} = useContext(UserContext);
     const [banner, setBanner] = useState(false)
     const [bannermsg, setBannermsg] = useState("")
 
+    const setUser = async (id) => {
+        try {
+            await AsyncStorage.setItem("userId",id);
+            const uid = await AsyncStorage.getItem("userId")
+        }catch (e) {
+            console.log(e);
+        }
+    }
     const submitUser = () => {
         axios.post(API_URL+"/api/user/login", {
             username: username.toLowerCase(),
             password: password.toLowerCase()
         }).then((res)=>{
-            //123console.log(res.data["id"])
+            console.log(res.data["id"])
+
             setUser(res.data["id"])
             navigation.navigate("Home")
     })
         .catch((err)=>{
             //console.log(err.response)
-            setBannermsg(err.response["request"]["_response"])
+            console.log(err.response)
+            setBannermsg(err)
             setBanner(true)
             setTimeout(() => {
                 setBanner(false)
@@ -42,7 +52,7 @@ export default function LogIn({navigation}){
                         <TextInput secureTextEntry={true} style={styles.inputbox} value={password} onChangeText={setPassword} placeholder={"password"} />
                         <Pressable 
                             style={styles.buttonstyle}
-                            onPress={() => submitUser() }
+                            onPress={() => {submitUser()} }
                                 >
                                 <Text style={{textAlign:"center", padding:3}}>Submit</Text>
                         </Pressable>

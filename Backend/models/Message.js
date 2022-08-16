@@ -8,9 +8,13 @@ const MessageSchema = new mongoose.Schema(
     sender: {
       type: String,
     },
+    username: {
+      type:String,
+    },
     text: {
       type: String,
     },
+    
   },
   { timestamps: true }
 );

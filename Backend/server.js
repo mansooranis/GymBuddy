@@ -42,7 +42,7 @@ const getUser = (userId) => {
 
 io.on("connection", (socket) => {
 //when ceonnect
-    console.log("a user connected.");
+    //console.log("a user connected.");
 
     //take userId and socketId from user
     socket.on("addUser", (userId) => {
@@ -51,12 +51,19 @@ io.on("connection", (socket) => {
     });
 
     //send and get message
-    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-        const user = getUser(receiverId);
-        io.to(user.socketId).emit("getMessage", {
-            senderId,
-            text,
-        });
+    socket.on("sendMessage", ({ senderId, receiverId, text, msgid }) => {
+        const user = getUser(receiverId)
+        //console.log(user);
+        try {
+            io.to(user.socketId).emit("getMessage", {
+                msgid,
+                senderId,
+                text,
+            });
+            //console.log("message sent")
+        }catch(e){
+            console.log("message not sent", e)
+        }
     });
 
     //when disconnect

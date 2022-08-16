@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import {View, ScrollView, StyleSheet, Text, TextInput, Button, Pressable, SafeAreaView, Modal } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import tw from 'twrnc';
 import { UserContext } from "../UserContext";
 import BannerAlert from "./Components/BannerAlert";
@@ -30,11 +31,13 @@ export default function SignUp({navigation}){
         await axios.post(URL+"/api/user/register",{
             name: name.toLowerCase(),
             email: email.toLowerCase(),
-            password: password.toLowerCase(),
+            password: password,
             username: username.toLowerCase(),
         }).then((res) => {
-            console.log(res, res.data["authToken"], res.data["_id"])
+            console.log(res, res.data["authToken"], res.data._id)
             setUser(res.data["_id"])
+           AsyncStorage.setItem("userID",res.data["_id"])
+            navigation.navigate("Home")
         }).catch((err)=>{
             //console.log(err.response["request"]["_response"])
             setBannermsg(err.response["request"]["_response"])

@@ -3,6 +3,7 @@ const User = require("../models/UserModel");
 const bcrypt = require("bcryptjs");
 const Joi = require("@hapi/joi");
 const jwt = require("jsonwebtoken");
+const ObjectId = require("mongoose").Types.ObjectId
 
 const registerSchema = Joi.object({
     name: Joi.string().min(3).required(),
@@ -59,5 +60,19 @@ router.post("/login", async (req, res) => {
     user.authToken = token;
     res.status(200).send({id:user._id, authToken:user.authToken});
 });
+
+router.get("/:id", async (req, res) => {
+    try {
+        if (req.params.id){
+            var id = req.params.id;    
+            var good_id = new ObjectId(id);
+            const username = await User.findById(good_id)
+            //console.log(username.username)
+            res.status(200).send(username.username)
+        }
+    }catch(e){
+        
+    }
+})
 
 module.exports = router;
