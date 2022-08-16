@@ -15,7 +15,7 @@ An app that connects gym members to one other in an effort to promote personal h
 
 ## Features
 - [X] Advance Authentication
-- [ ] End-to-End live chat
+- [X] End-to-End live chat
 - [ ] Location wise gym and its members
 - [ ] workout logs
 
@@ -26,4 +26,4 @@ Open for contibutions! Create a pull request to contribute, make sure your code 
 GNU Affero General Public License v3.0
 
 ## Visuals (Progress till now)
-<img src="https://github.com/mansooranis/GymBuddy/blob/main/assets/authss.png">
+<img src="https://github.com/mansooranis/GymBuddy/blob/main/assets/Vime-15-Aug-2022_-11-25-21-PM.gif">
